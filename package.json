@@ -1,0 +1,26 @@
+{
+  "name": "immutable-deck",
+  "version": "1.0.0",
+  "description": "A deck (of cards) with methods you'd expect for drawing, shuffling, etc. based on Immutable.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "yarn test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mimshwright/immutable-deck.git"
+  },
+  "keywords": [
+    "immutable",
+    "cards",
+    "game",
+    "data",
+    "structure"
+  ],
+  "author": "Mims H. Wright",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mimshwright/immutable-deck/issues"
+  },
+  "homepage": "https://github.com/mimshwright/immutable-deck#readme"
+}
