@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "A deck (of cards) with methods you'd expect for drawing, shuffling, etc. based on Immutable.js",
   "main": "dist/immutable-deck.js",
+  "module": "src/index.js",
   "scripts": {
-    "build:browser": "webpack && cp dist/webpack-numbers.js examples/browser",
-    "build:node": "webpack && cp dist/webpack-numbers.js examples/node/ && node examples/node/example.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack",
+    "test": "nyc ava"
   },
   "repository": {
     "type": "git",
@@ -26,14 +26,32 @@
   },
   "homepage": "https://github.com/mimshwright/immutable-deck#readme",
   "devDependencies": {
-    "babel-core": "^6.26.3",
+    "@babel/core": "^7.0.0-beta.46",
+    "@babel/polyfill": "^7.0.0-beta.46",
+    "@babel/preset-env": "^7.0.0-beta.46",
+    "@babel/register": "^7.0.0-beta.46",
+    "ava": "^0.25.0",
     "babel-loader": "^7.1.4",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-preset-env": "^1.6.1",
+    "eslint": "^4.19.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-env": "^0.0.3",
+    "nyc": "^11.7.1",
+    "prettier": "^1.12.1",
     "webpack": "^4.6.0",
     "webpack-cli": "^2.1.2"
   },
   "dependencies": {
     "immutable": "^3.8.2"
+  },
+  "ava": {
+    "concurrency": 5,
+    "failFast": true,
+    "failWithoutAssertions": false,
+    "require": [
+      "@babel/register",
+      "@babel/polyfill"
+    ]
   }
 }
