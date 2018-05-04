@@ -1,19 +1,15 @@
-import { Stack } from "immutable";
+import { Stack } from "extendable-immutable";
 
 class Deck extends Stack {
   constructor(value) {
     super(value);
   }
 
-  draw() {
-    return "Draw!";
+  draw(n = 1) {
+    if (n > this.size)
+      throw new RangeError("You can't draw more items than exist in the deck");
+    return [this.take(n), this.skip(n)];
   }
 }
 
 export default Deck;
-
-const d = new Deck([0, 1, 2, 3]);
-console.log("d:" + d);
-console.log("d.size:" + d.size);
-console.log("d.peek:" + d.peek);
-console.log("d.draw:" + d.draw);

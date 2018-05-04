@@ -11,7 +11,7 @@ export default () => ({
     // libraryExport: 'default',
     library: "immutable-deck",
   },
-  externals: ["immutable"],
+  externals: ["immutable", "extendable-immutable"],
   module: {
     rules: [
       {
