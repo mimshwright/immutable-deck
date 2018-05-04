@@ -35,25 +35,50 @@ test("size", assert => {
 
 test("draw()", assert => {
   let deck = createDeckOf10();
-  let [cards, newDeck] = deck.draw();
   assert.true(isFunction(deck.draw), "draw() is a function.");
+  let [cards, newDeck] = deck.draw();
   assert.is(cards.size, 1, "Draw defaults to 1 card");
   assert.is(newDeck.size, 9, "New deck is returned without the first card");
   assert.not(deck, newDeck, "Returns a new instance of deck");
   assert.is(deck.size, 10, "Original deck isn't altered");
-  assert.is(cards.get(0), 0, "Draw from front of stack");
-  assert.is(
-    cards.get(0),
-    deck.peek(),
-    "Result is the same as peek would give."
-  );
+  assert.is(cards.first(), deck.first(), "Draw from front of stack");
 
   [cards, newDeck] = deck.draw(2);
   assert.is(cards.size, 2, "Specify number of cards to draw");
   assert.is(newDeck.size, 8, "New deck is returned without the first 2 cards");
 
+  [cards, newDeck] = deck.draw(10);
+  assert.is(cards.size, 10);
+  assert.is(newDeck.size, 0);
+
   assert.throws(
     () => deck.draw(11),
+    Error,
+    "Can't draw more cards than are in the deck."
+  );
+});
+
+test("drawFromBottom()", assert => {
+  let deck = createDeckOf10();
+  assert.true(
+    isFunction(deck.drawFromBottom),
+    "drawFromBottom() is a function."
+  );
+  let [cards, newDeck] = deck.drawFromBottom();
+  assert.is(cards.size, 1, "Draw defaults to 1 card");
+  assert.is(newDeck.size, 9, "New deck is returned without the first card");
+  assert.not(deck, newDeck, "Returns a new instance of deck");
+  assert.is(deck.size, 10, "Original deck isn't altered");
+  assert.is(cards.first(), deck.last(), "Draw from end of stack");
+
+  [cards, newDeck] = deck.drawFromBottom(2);
+  assert.is(cards.size, 2, "Specify number of cards to draw");
+  assert.is(newDeck.size, 8, "New deck is returned without the first 2 cards");
+  assert.is(cards.get(0), deck.get(9), "Card order should be last first.");
+  assert.is(cards.get(1), deck.get(8), "Card order should be last first.");
+
+  assert.throws(
+    () => deck.drawFromBottom(11),
     Error,
     "Can't draw more cards than are in the deck."
   );

@@ -6,7 +6,8 @@
   "module": "src/index.js",
   "scripts": {
     "build": "webpack",
-    "test": "nyc ava"
+    "test": "nyc ava",
+    "watch": "nyc ava --watch"
   },
   "repository": {
     "type": "git",
