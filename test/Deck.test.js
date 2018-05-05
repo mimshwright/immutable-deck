@@ -83,3 +83,47 @@ test("drawFromBottom()", assert => {
     "Can't draw more cards than are in the deck."
   );
 });
+
+test("addToTop() / add()", assert => {
+  let deck = new Deck();
+  assert.true(isFunction(deck.add), "add() is a function.");
+
+  let newDeck = deck.add(0);
+  assert.is(newDeck.size, 1, "Add an element to top of deck");
+  assert.is(newDeck.get(0), 0, "Added correct value");
+  assert.deepEqual(
+    deck.add(0),
+    deck.addToTop(0),
+    "add and addToTop produce the same results"
+  );
+
+  newDeck = newDeck.add(1);
+  assert.is(newDeck.size, 2);
+  assert.is(newDeck.get(0), 1, "Adds to front of stack");
+
+  newDeck = newDeck.add([2, 3, 4]);
+  assert.is(newDeck.size, 5, "Adds collections to list.");
+  assert.is(newDeck.join("-"), "2-3-4-1-0", "Adds items in correct order");
+
+  newDeck = newDeck.add(5, 6, 7);
+  assert.is(newDeck.size, 8, "Adds each argument to the list.");
+  assert.is(
+    newDeck.join("-"),
+    "5-6-7-2-3-4-1-0",
+    "Adds items in correct order"
+  );
+
+  newDeck = newDeck.add(8, [9, 10]);
+  assert.is(
+    newDeck.join("-"),
+    "8-9,10-5-6-7-2-3-4-1-0",
+    "Only flattens first collection."
+  );
+
+  assert.true(isFunction(deck.addToTop), "addToTop() is a function.");
+  assert.deepEqual(
+    new Deck().add(0, 1, 2).join("-"),
+    new Deck().addToTop(0, 1, 2).join("-"),
+    "add() and addToTop() produce same results."
+  );
+});

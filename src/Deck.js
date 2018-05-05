@@ -20,6 +20,22 @@ class Deck extends Stack {
       );
     return [this.takeLast(n).reverse(), this.skipLast(n)];
   }
+
+  add(element, ...rest) {
+    let elements;
+    // element = Collection.isCollection(element) ? elment.toArray() : element;
+    if (element instanceof Array) {
+      elements = element;
+    } else {
+      elements = [element];
+    }
+    elements.push(...rest);
+    return this.push(...elements);
+  }
+
+  addToTop(...args) {
+    return this.add(...args);
+  }
 }
 
 export default Deck;
