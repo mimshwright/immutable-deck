@@ -142,3 +142,62 @@ test("deal()", assert => {
     "dealFromTop() is an alias of deal()"
   );
 });
+
+test("addToTop() / add()", assert => {
+  let deck = new Deck();
+  assert.true(isFunction(deck.addToTop), "addToTop() is a function.");
+
+  let newDeck = deck.addToTop(0);
+  assert.is(newDeck.size, 1, "Add an element to top of deck");
+  assert.is(newDeck.get(0), 0, "Added correct value");
+
+  newDeck = newDeck.addToTop(1);
+  assert.is(newDeck.size, 2);
+  assert.is(newDeck.get(0), 1, "Adds to front of stack");
+
+  newDeck = newDeck.addToTop(2, 3, 4);
+  assert.is(newDeck.size, 5, "Adds several items to list.");
+  assert.is(newDeck.join("-"), "2-3-4-1-0", "Adds items in correct order");
+
+  assert.true(isFunction(deck.addToTop), "addToTop() is a function.");
+  assert.is(newDeck.add, newDeck.addToTop, "add() is an alias for addToTop()");
+});
+
+test("addToBottom()", assert => {
+  let deck = new Deck([]);
+  assert.true(isFunction(deck.addToBottom), "addToBottom() is a function.");
+
+  let newDeck = deck
+    .addToBottom(0)
+    .addToBottom(1)
+    .addToBottom(2);
+
+  assert.is(newDeck.size, 3, "Add an element to bottom of deck");
+  assert.is(newDeck.get(0), 0, "Added correct value");
+  assert.is(newDeck.get(2), 2, "Added correct value");
+
+  newDeck = newDeck.addToBottom(3, 4, 5);
+  assert.is(newDeck.size, 6, "Adds several items to end of list.");
+  assert.is(newDeck.join("-"), "0-1-2-3-4-5", "Adds items in correct order");
+});
+
+test("addAt()", assert => {
+  let deck = new Deck(["first", "last"]);
+  assert.true(isFunction(deck.addAt), "addAt() is a function.");
+
+  let newDeck = deck.addAt(1, "middle");
+  assert.is(newDeck.size, 3, "Add an element to middle of deck");
+  assert.is(newDeck.get(1), "middle", "Added correct value at correct spot");
+
+  newDeck = new Deck([0, 1, 5]).addAt(2, 2, 3, 4);
+  assert.is(newDeck.size, 6, "Adds several items to middle.");
+  assert.is(newDeck.join("-"), "0-1-2-3-4-5", "Adds items in correct order");
+
+  newDeck = new Deck([0, 1, 5]).addAt(2)(2, 3, 4);
+  assert.is(newDeck.size, 6, "First value can be partially called.");
+  assert.is(
+    newDeck.join("-"),
+    "0-1-2-3-4-5",
+    "First value can be partially called"
+  );
+});

@@ -1,4 +1,5 @@
 import { Stack } from "extendable-immutable";
+import R from "ramda";
 
 class Deck extends Stack {
   constructor(value) {
@@ -43,9 +44,19 @@ class Deck extends Stack {
     return this.splice(index, 1, value);
   }
 
+  addToTop = (element, ...rest) => new Deck(this.push(element, ...rest));
+
+  addToBottom = (element, ...rest) =>
+    this.splice(this.size, 0, element, ...rest);
+
+  addAt = R.curry((index, element, ...rest) =>
+    this.splice(index, 0, element, ...rest)
+  );
+
   // Aliases
   draw = this.drawFromTop;
   deal = this.dealFromTop;
+  add = this.addToTop;
 }
 
 export default Deck;
