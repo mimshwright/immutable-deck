@@ -5,7 +5,7 @@ class Deck extends Stack {
     super(value);
   }
 
-  draw(n = 1) {
+  drawFromTop(n = 1) {
     if (n > this.size)
       throw new RangeError(
         "You can't draw more items than the size of the deck."
@@ -20,6 +20,32 @@ class Deck extends Stack {
       );
     return [this.takeLast(n).reverse(), this.skipLast(n)];
   }
+
+  dealFromTop(groupCount, elementCount = -1) {
+    let newDeck;
+    let groups = new Deck();
+    const totalDealt = elementCount < 0 ? this.size : groupCount * elementCount;
+
+    this.forEach((element, i) => {
+      if (i >= totalDealt) return;
+      const groupIndex = i % groupCount;
+
+      let group = (groups.get(groupIndex) || new Deck()).push(element);
+      groups = groups.set(groupIndex, group);
+    });
+
+    newDeck = this.splice(0, totalDealt);
+
+    return groups.toArray().concat([newDeck]);
+  }
+
+  set(index, value) {
+    return this.splice(index, 1, value);
+  }
+
+  // Aliases
+  draw = this.drawFromTop;
+  deal = this.dealFromTop;
 }
 
 export default Deck;

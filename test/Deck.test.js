@@ -33,6 +33,12 @@ test("size", assert => {
   );
 });
 
+test("set", assert => {
+  let deck = new Deck([0, 1, "two", 3]);
+  assert.true(isFunction(deck.set));
+  assert.is(deck.set(2, 2).join(","), "0,1,2,3");
+});
+
 test("draw()", assert => {
   let deck = createDeckOf10();
   assert.true(isFunction(deck.draw), "draw() is a function.");
@@ -55,6 +61,12 @@ test("draw()", assert => {
     () => deck.draw(11),
     Error,
     "Can't draw more cards than are in the deck."
+  );
+
+  assert.is(
+    newDeck.draw,
+    newDeck.drawFromTop,
+    "drawFromTop() is an alias of deal()"
   );
 });
 
@@ -81,5 +93,52 @@ test("drawFromBottom()", assert => {
     () => deck.drawFromBottom(11),
     Error,
     "Can't draw more cards than are in the deck."
+  );
+});
+
+test("deal()", assert => {
+  let deck = createDeckOf10();
+  let hand0, hand1, hand2, newDeck;
+  assert.true(isFunction(deck.deal));
+
+  [hand0, hand1, newDeck] = deck.deal(2, 3);
+  assert.is(hand0.size, 3, "Deal 3 cards to 2 hands");
+  assert.is(hand1.size, 3);
+  assert.is(
+    hand0.get(0),
+    4,
+    "Order of cards: top card on deck is bottom card of hand."
+  );
+  assert.is(hand0.get(1), 2);
+  assert.is(hand0.get(2), 0);
+  assert.is(newDeck.size, 4, "Remaining cards stay in deck");
+
+  [hand0, hand1, newDeck] = deck.deal(2);
+  assert.is(hand0.size, 5, "If no card count is given, all cards are dealt.");
+  assert.is(hand1.size, 5);
+  assert.is(newDeck.size, 0);
+
+  [hand0, hand1, hand2, newDeck] = deck.deal(3, 4);
+  assert.is(
+    hand0.size,
+    4,
+    "Dealing more cards than available distributes until all gone"
+  );
+  assert.is(
+    hand1.size,
+    3,
+    "The first hands dealt may get more than later hands."
+  );
+  assert.is(hand2.size, 3);
+  assert.is(
+    newDeck.size,
+    0,
+    "when more cards are dealt than are in deck, the deck is empty"
+  );
+
+  assert.is(
+    newDeck.deal,
+    newDeck.dealFromTop,
+    "dealFromTop() is an alias of deal()"
   );
 });
