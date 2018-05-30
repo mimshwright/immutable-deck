@@ -14,12 +14,9 @@ test("Hello world!", assert => {
 test("Deck exists", assert => {
   assert.truthy(Deck, "Deck exists");
   let deck = createDeckOf10();
+
   assert.true(deck instanceof Stack, "Deck extends Stack.");
-
-  // Doesn't work due to some babel stuff.
-  // assert.true(deck instanceof Deck, "new Deck() returns an instance of Deck.");
-
-  // console.log(Object.keys(deck), Object.values(deck));
+  assert.true(deck instanceof Deck, "new Deck() returns an instance of Deck.");
 });
 
 test("size", assert => {
