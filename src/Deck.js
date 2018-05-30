@@ -43,10 +43,13 @@ class Deck extends Stack {
   addAt = (index, firstElement, ...rest) =>
     this.splice(index, 0, firstElement, ...rest);
 
+  cut = (index = Math.ceil(this.size / 2)) => this.draw(index);
+
   // Aliases
   draw = this.drawFromTop;
   deal = this.dealFromTop;
   add = this.addToTop;
+  split = this.cut;
 }
 
 export default Deck;

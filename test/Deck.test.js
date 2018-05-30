@@ -209,3 +209,34 @@ test("addAt()", assert => {
   assert.is(newDeck.size, 6, "Adds several items to middle.");
   assert.is(newDeck.join("-"), "0-1-2-3-4-5", "Adds items in correct order");
 });
+
+test("cut() / split()", assert => {
+  let deck = createDeckOf10();
+  assert.true(isFunction(deck.cut), "cut() is a function.");
+
+  let [firstHalf, secondHalf] = deck.cut();
+  assert.is(firstHalf.size, 5, "By default splits in half.");
+  assert.is(secondHalf.size, 5, "By default splits in half.");
+  assert.is(firstHalf.join("-"), "0-1-2-3-4", "Values as expected.");
+  assert.is(secondHalf.join("-"), "5-6-7-8-9", "Values as expected.");
+
+  deck = deck.add(10);
+  [firstHalf, secondHalf] = deck.cut();
+  assert.is(deck.size, 11, "Check that add() worked as expected.");
+  assert.is(firstHalf.size, 6, "Extra item goes in the first half.");
+  assert.is(
+    secondHalf.size,
+    5,
+    "Extra item goes in the first half not the second half."
+  );
+
+  [firstHalf, secondHalf] = deck.cut(3);
+  assert.is(
+    firstHalf.size,
+    3,
+    "Add an index parameter to split at that index."
+  );
+  assert.is(secondHalf.size, 8);
+
+  assert.is(deck.split, deck.cut, "split() is an alias for cut()");
+});
