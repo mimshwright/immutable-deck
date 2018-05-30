@@ -20,25 +20,20 @@ test("Deck exists", assert => {
 });
 
 test("size", assert => {
-  let deck = createDeckOf10();
-  let emptyDeck = new Deck();
+  const deck = createDeckOf10();
   assert.is(deck.size, 10, "Deck size shows the numebr of cards in the deck.");
-  assert.is(
-    emptyDeck.size,
-    0,
-    "Deck size shows the numebr of cards in the deck."
-  );
 });
 
-test("set", assert => {
+test("set()", assert => {
   let deck = new Deck([0, 1, "two", 3]);
   assert.true(isFunction(deck.set));
-  assert.is(deck.set(2, 2).join(","), "0,1,2,3");
+  assert.is(deck.set(2, 2).join(","), "0,1,2,3", "Set a value at an index");
 });
 
-test("draw()", assert => {
+test("draw() / drawFromTop()", assert => {
   let deck = createDeckOf10();
   assert.true(isFunction(deck.draw), "draw() is a function.");
+
   let [cards, newDeck] = deck.draw();
   assert.is(cards.size, 1, "Draw defaults to 1 card");
   assert.is(newDeck.size, 9, "New deck is returned without the first card");
@@ -52,18 +47,23 @@ test("draw()", assert => {
 
   [cards, newDeck] = deck.draw(10);
   assert.is(cards.size, 10);
-  assert.is(newDeck.size, 0);
+  assert.is(
+    newDeck.size,
+    0,
+    "Always returns a new deck even if there is nothing left in it."
+  );
 
-  assert.throws(
-    () => deck.draw(11),
-    Error,
-    "Can't draw more cards than are in the deck."
+  [cards, newDeck] = deck.draw(99);
+  assert.is(
+    cards.size,
+    10,
+    "Drawing more than size defaults to maximum size of deck"
   );
 
   assert.is(
     newDeck.draw,
     newDeck.drawFromTop,
-    "drawFromTop() is an alias of deal()"
+    "drawFromTop() is an alias of draw()"
   );
 });
 
@@ -86,14 +86,15 @@ test("drawFromBottom()", assert => {
   assert.is(cards.get(0), deck.get(9), "Card order should be last first.");
   assert.is(cards.get(1), deck.get(8), "Card order should be last first.");
 
-  assert.throws(
-    () => deck.drawFromBottom(11),
-    Error,
-    "Can't draw more cards than are in the deck."
+  [cards, newDeck] = deck.drawFromBottom(99);
+  assert.is(
+    cards.size,
+    10,
+    "Drawing more than size defaults to maximum size of deck"
   );
 });
 
-test("deal()", assert => {
+test("deal() / dealFromTop()", assert => {
   let deck = createDeckOf10();
   let hand0, hand1, hand2, newDeck;
   assert.true(isFunction(deck.deal));
@@ -138,6 +139,24 @@ test("deal()", assert => {
     newDeck.dealFromTop,
     "dealFromTop() is an alias of deal()"
   );
+});
+
+test("dealFromBottom()", assert => {
+  let deck = createDeckOf10();
+  let hand0, hand1, newDeck;
+  assert.true(isFunction(deck.dealFromBottom));
+
+  [hand0, hand1, newDeck] = deck.dealFromBottom(2, 3);
+  assert.is(hand0.size, 3, "Deal 3 cards to 2 hands from bottom");
+  assert.is(hand1.size, 3);
+  assert.is(
+    hand0.get(0),
+    5,
+    "Order of cards: top card on deck is bottom card of hand."
+  );
+  assert.is(hand0.get(1), 7);
+  assert.is(hand0.get(2), 9);
+  assert.is(newDeck.size, 4, "Remaining cards stay in deck");
 });
 
 test("addToTop() / add()", assert => {
@@ -189,12 +208,4 @@ test("addAt()", assert => {
   newDeck = new Deck([0, 1, 5]).addAt(2, 2, 3, 4);
   assert.is(newDeck.size, 6, "Adds several items to middle.");
   assert.is(newDeck.join("-"), "0-1-2-3-4-5", "Adds items in correct order");
-
-  newDeck = new Deck([0, 1, 5]).addAt(2)(2, 3, 4);
-  assert.is(newDeck.size, 6, "First value can be partially called.");
-  assert.is(
-    newDeck.join("-"),
-    "0-1-2-3-4-5",
-    "First value can be partially called"
-  );
 });

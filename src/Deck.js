@@ -1,26 +1,13 @@
 import { Stack } from "extendable-immutable";
-import R from "ramda";
 
 class Deck extends Stack {
   constructor(value) {
     super(value);
   }
 
-  drawFromTop(n = 1) {
-    if (n > this.size)
-      throw new RangeError(
-        "You can't draw more items than the size of the deck."
-      );
-    return [this.take(n), this.skip(n)];
-  }
+  drawFromTop = (n = 1) => [this.take(n), this.skip(n)];
 
-  drawFromBottom(n = 1) {
-    if (n > this.size)
-      throw new RangeError(
-        "You can't draw more items than the size of the deck."
-      );
-    return [this.takeLast(n).reverse(), this.skipLast(n)];
-  }
+  drawFromBottom = (n = 1) => [this.takeLast(n).reverse(), this.skipLast(n)];
 
   dealFromTop(groupCount, elementCount = -1) {
     let newDeck;
@@ -40,18 +27,21 @@ class Deck extends Stack {
     return groups.toArray().concat([newDeck]);
   }
 
+  dealFromBottom = (groupCount, elementCount = -1) =>
+    this.reverse().deal(groupCount, elementCount);
+
   set(index, value) {
     return this.splice(index, 1, value);
   }
 
-  addToTop = (element, ...rest) => new Deck(this.push(element, ...rest));
+  addToTop = (firstElement, ...rest) =>
+    new Deck(this.push(firstElement, ...rest));
 
   addToBottom = (element, ...rest) =>
     this.splice(this.size, 0, element, ...rest);
 
-  addAt = R.curry((index, element, ...rest) =>
-    this.splice(index, 0, element, ...rest)
-  );
+  addAt = (index, firstElement, ...rest) =>
+    this.splice(index, 0, firstElement, ...rest);
 
   // Aliases
   draw = this.drawFromTop;
