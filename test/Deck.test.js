@@ -13,7 +13,7 @@ test("Hello world!", assert => {
 
 test("Deck exists", assert => {
   assert.truthy(Deck, "Deck exists");
-  let deck = createDeckOf10();
+  let deck = new Deck([1, 2, 3]);
 
   assert.true(deck instanceof Stack, "Deck extends Stack.");
   assert.true(deck instanceof Deck, "new Deck() returns an instance of Deck.");
@@ -94,10 +94,31 @@ test("drawFromBottom()", assert => {
   );
 });
 
+test("drawFrom()", assert => {
+  let deck = createDeckOf10();
+  let hand, newDeck;
+  assert.true(isFunction(deck.drawFrom), "drawFrom() exists");
+
+  [hand, newDeck] = deck.drawFrom(3);
+  assert.is(hand.size, 1, "by default, draws one card");
+  assert.is(hand.get(0), 3, "by default, draws one card");
+  assert.is(newDeck.get(2), 2);
+  assert.is(newDeck.get(3), 4, "removes correct card from the new deck");
+  assert.is(newDeck.size, 9);
+
+  [hand, newDeck] = deck.drawFrom(3, 2);
+  assert.is(hand.size, 2, "Draw 2 cards from deck");
+  assert.is(hand.get(0), 3, "draws correct cards");
+  assert.is(hand.get(1), 4, "draws correct cards");
+  assert.is(newDeck.get(2), 2);
+  assert.is(newDeck.get(3), 5, "removes correct card from the new deck");
+  assert.is(newDeck.size, 8);
+});
+
 test("deal() / dealFromTop()", assert => {
   let deck = createDeckOf10();
   let hand0, hand1, hand2, newDeck;
-  assert.true(isFunction(deck.deal));
+  assert.true(isFunction(deck.deal, "deal() exists"));
 
   [hand0, hand1, newDeck] = deck.deal(2, 3);
   assert.is(hand0.size, 3, "Deal 3 cards to 2 hands");
@@ -157,6 +178,11 @@ test("dealFromBottom()", assert => {
   assert.is(hand0.get(1), 7);
   assert.is(hand0.get(2), 9);
   assert.is(newDeck.size, 4, "Remaining cards stay in deck");
+
+  [hand0, hand1, newDeck] = deck.dealFromBottom(2);
+  assert.is(hand0.size, 5, "By default deal all the cards");
+  assert.is(hand1.size, 5);
+  assert.is(newDeck.size, 0);
 });
 
 test("addToTop() / add()", assert => {

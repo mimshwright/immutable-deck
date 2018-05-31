@@ -9,6 +9,11 @@ class Deck extends Stack {
 
   drawFromBottom = (n = 1) => [this.takeLast(n).reverse(), this.skipLast(n)];
 
+  drawFrom = (index, n = 1) => [
+    this.skip(index).take(n),
+    this.splice(index, n),
+  ];
+
   dealFromTop(groupCount, elementCount = -1) {
     let newDeck;
     let groups = new Deck();
