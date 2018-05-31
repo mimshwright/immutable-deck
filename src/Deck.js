@@ -14,6 +14,11 @@ class Deck extends Stack {
     this.splice(index, n),
   ];
 
+  move(targetDeck, n) {
+    const [drawnItems, sourceDeck] = this.draw(n);
+    return [targetDeck.add(...drawnItems), sourceDeck];
+  }
+
   dealFromTop(groupCount, elementCount = -1) {
     let newDeck;
     let groups = new Deck();

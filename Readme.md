@@ -12,6 +12,7 @@
   - [X] bottom,
   - [X] or at an arbitrary place,
   - [ ] or at a random place.
+- [X] Move items from one deck to another.
 - [X] Deal an arbitrary number of items from the Deck into an arbitrary number of groups.
   - [X] ... from the top
   - [X] from the bottom

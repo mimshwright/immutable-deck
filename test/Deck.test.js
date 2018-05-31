@@ -115,6 +115,20 @@ test("drawFrom()", assert => {
   assert.is(newDeck.size, 8);
 });
 
+test("move()", assert => {
+  let deck = createDeckOf10();
+  assert.true(isFunction(deck.move), "move() is a function.");
+
+  let targetDeck = new Deck(["existing value"]);
+  let sourceDeck;
+  [targetDeck, sourceDeck] = deck.move(targetDeck, 5);
+  assert.is(targetDeck.size, 6);
+  assert.is(sourceDeck.size, 5);
+  assert.is(targetDeck.get(0), 0);
+  assert.is(targetDeck.get(5), "existing value");
+  assert.is(sourceDeck.get(0), 5);
+});
+
 test("deal() / dealFromTop()", assert => {
   let deck = createDeckOf10();
   let hand0, hand1, hand2, newDeck;
