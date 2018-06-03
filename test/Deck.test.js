@@ -280,3 +280,43 @@ test("cut() / split()", assert => {
 
   assert.is(deck.split, deck.cut, "split() is an alias for cut()");
 });
+
+test("setRandomSeed(), getRandomItemIndex()", assert => {
+  let deck = createDeckOf10();
+  assert.true(isFunction(deck.setRandomSeed), "setRandomSeed() is a function.");
+  assert.true(
+    isFunction(deck.getRandomItemIdex),
+    "getRandomItemIndex() is a function."
+  );
+
+  deck.setRandomSeed("seed");
+  const get10RandomItems = () =>
+    new Array(10)
+      .fill(0)
+      .map(() => deck.getRandomItemIdex())
+      .join("-");
+  let tenRandomItems = get10RandomItems();
+  const expected = "5-8-7-7-3-1-3-5-1-1"; // added manually after first experiment
+
+  assert.is(
+    tenRandomItems,
+    expected,
+    "Deterministic random gives us the same value always."
+  );
+
+  deck.setRandomSeed("seed");
+  let tenMoreRandomItems = get10RandomItems();
+  assert.is(
+    tenMoreRandomItems,
+    tenRandomItems,
+    "Setting the random seed again will restart the random sequence"
+  );
+
+  deck.setRandomSeed();
+  let tenReallyRandomItems = get10RandomItems();
+  assert.not(
+    tenReallyRandomItems,
+    tenRandomItems,
+    "Setting random seed to undefined uses a non deterministic random number. This should (almost) never generate the same number as the deterministic one."
+  );
+});

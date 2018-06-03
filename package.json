@@ -56,7 +56,8 @@
     "extendable-immutable": "^1.3.3",
     "husky": "^0.14.3",
     "immutable": "^3.8.2",
-    "ramda": "^0.25.0"
+    "ramda": "^0.25.0",
+    "random-seed": "^0.3.0"
   },
   "ava": {
     "concurrency": 5,

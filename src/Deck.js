@@ -1,9 +1,17 @@
 import { Stack } from "extendable-immutable";
+import createRandomNumberGenerator from "random-seed";
+
+let random = createRandomNumberGenerator.create();
 
 class Deck extends Stack {
   constructor(value) {
     super(value);
   }
+
+  setRandomSeed = (seed = undefined) =>
+    (random = createRandomNumberGenerator(seed));
+
+  getRandomItemIdex = () => random(this.size);
 
   drawFromTop = (n = 1) => [this.take(n), this.skip(n)];
 
