@@ -281,13 +281,14 @@ test("cut() / split()", assert => {
   assert.is(deck.split, deck.cut, "split() is an alias for cut()");
 });
 
-test("setRandomSeed(), getRandomItemIndex()", assert => {
+test("setRandomSeed(), getRandomItemIndex(), shuffle()", assert => {
   let deck = createDeckOf10();
   assert.true(isFunction(deck.setRandomSeed), "setRandomSeed() is a function.");
   assert.true(
     isFunction(deck.getRandomItemIdex),
     "getRandomItemIndex() is a function."
   );
+  assert.true(isFunction(deck.shuffle), "shuffle() is a function.");
 
   deck.setRandomSeed("seed");
   const get10RandomItems = () =>
@@ -318,5 +319,21 @@ test("setRandomSeed(), getRandomItemIndex()", assert => {
     tenReallyRandomItems,
     tenRandomItems,
     "Setting random seed to undefined uses a non deterministic random number. This should (almost) never generate the same number as the deterministic one."
+  );
+
+  deck.setRandomSeed("seed");
+  let shuffledDeck = deck.shuffle();
+  assert.not(shuffledDeck, deck, "shuffle() produces a new copy");
+  assert.is(
+    shuffledDeck.join("-"),
+    "2-6-3-8-0-1-9-5-7-4",
+    "Shuffle returns a new deck with randomized order."
+  );
+
+  deck.setRandomSeed();
+  assert.not(
+    deck.shuffle().join(""),
+    deck.join(""),
+    "non-deterministic shuffle. This should (almost) never generate the same number as the deterministic one."
   );
 });
