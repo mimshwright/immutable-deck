@@ -2,16 +2,16 @@
 
 ## Features / Roadmap
 
-- [ ] Add elements to the deck
+- [X] Add elements to the deck
   - [X] ...to the top,
   - [X] bottom,
   - [X] at an arbitrary place,
-  - [ ] or at a random place.
-- [ ] Draw one or more elements from the deck 
+  - [X] or at a random place.
+- [X] Draw one or more elements from the deck 
   - [X] ...from the top,
   - [X] bottom,
   - [X] or at an arbitrary place,
-  - [ ] or at a random place.
+  - [X] or at a random place.
 - [X] Move items from one deck to another.
 - [X] Deal an arbitrary number of items from the Deck into an arbitrary number of groups.
   - [X] ... from the top
@@ -23,7 +23,6 @@
   - [ ] At a semi-random point
 - [X] Count the number of items in the deck.
 - [X] Shuffle the contents of the deck.
-  - [ ] Maybe add simulations of real-world shuffling techniques?
 - [X] Unshuffle (sort) the contents of the deck.
 - [X] Reverse order of deck.
 - [X] Random methods are deterministic (can be reproduced with the same random seed).

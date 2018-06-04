@@ -21,7 +21,11 @@ test("Deck exists", assert => {
 
 test("size", assert => {
   const deck = createDeckOf10();
-  assert.is(deck.size, 10, "Deck size shows the numebr of cards in the deck.");
+  assert.is(
+    deck.size,
+    10,
+    "Deck size shows the numebr of elements in the deck."
+  );
 });
 
 test("set()", assert => {
@@ -34,28 +38,32 @@ test("draw() / drawFromTop()", assert => {
   let deck = createDeckOf10();
   assert.true(isFunction(deck.draw), "draw() is a function.");
 
-  let [cards, newDeck] = deck.draw();
-  assert.is(cards.size, 1, "Draw defaults to 1 card");
-  assert.is(newDeck.size, 9, "New deck is returned without the first card");
+  let [elements, newDeck] = deck.draw();
+  assert.is(elements.size, 1, "Draw defaults to 1 element");
+  assert.is(newDeck.size, 9, "New deck is returned without the first element");
   assert.not(deck, newDeck, "Returns a new instance of deck");
   assert.is(deck.size, 10, "Original deck isn't altered");
-  assert.is(cards.first(), deck.first(), "Draw from front of stack");
+  assert.is(elements.first(), deck.first(), "Draw from front of stack");
 
-  [cards, newDeck] = deck.draw(2);
-  assert.is(cards.size, 2, "Specify number of cards to draw");
-  assert.is(newDeck.size, 8, "New deck is returned without the first 2 cards");
+  [elements, newDeck] = deck.draw(2);
+  assert.is(elements.size, 2, "Specify number of elements to draw");
+  assert.is(
+    newDeck.size,
+    8,
+    "New deck is returned without the first 2 elements"
+  );
 
-  [cards, newDeck] = deck.draw(10);
-  assert.is(cards.size, 10);
+  [elements, newDeck] = deck.draw(10);
+  assert.is(elements.size, 10);
   assert.is(
     newDeck.size,
     0,
     "Always returns a new deck even if there is nothing left in it."
   );
 
-  [cards, newDeck] = deck.draw(99);
+  [elements, newDeck] = deck.draw(99);
   assert.is(
-    cards.size,
+    elements.size,
     10,
     "Drawing more than size defaults to maximum size of deck"
   );
@@ -73,22 +81,26 @@ test("drawFromBottom()", assert => {
     isFunction(deck.drawFromBottom),
     "drawFromBottom() is a function."
   );
-  let [cards, newDeck] = deck.drawFromBottom();
-  assert.is(cards.size, 1, "Draw defaults to 1 card");
-  assert.is(newDeck.size, 9, "New deck is returned without the first card");
+  let [elements, newDeck] = deck.drawFromBottom();
+  assert.is(elements.size, 1, "Draw defaults to 1 element");
+  assert.is(newDeck.size, 9, "New deck is returned without the first element");
   assert.not(deck, newDeck, "Returns a new instance of deck");
   assert.is(deck.size, 10, "Original deck isn't altered");
-  assert.is(cards.first(), deck.last(), "Draw from end of stack");
+  assert.is(elements.first(), deck.last(), "Draw from end of stack");
 
-  [cards, newDeck] = deck.drawFromBottom(2);
-  assert.is(cards.size, 2, "Specify number of cards to draw");
-  assert.is(newDeck.size, 8, "New deck is returned without the first 2 cards");
-  assert.is(cards.get(0), deck.get(9), "Card order should be last first.");
-  assert.is(cards.get(1), deck.get(8), "Card order should be last first.");
-
-  [cards, newDeck] = deck.drawFromBottom(99);
+  [elements, newDeck] = deck.drawFromBottom(2);
+  assert.is(elements.size, 2, "Specify number of elements to draw");
   assert.is(
-    cards.size,
+    newDeck.size,
+    8,
+    "New deck is returned without the first 2 elements"
+  );
+  assert.is(elements.get(0), deck.get(9), "Card order should be last first.");
+  assert.is(elements.get(1), deck.get(8), "Card order should be last first.");
+
+  [elements, newDeck] = deck.drawFromBottom(99);
+  assert.is(
+    elements.size,
     10,
     "Drawing more than size defaults to maximum size of deck"
   );
@@ -100,18 +112,18 @@ test("drawFrom()", assert => {
   assert.true(isFunction(deck.drawFrom), "drawFrom() exists");
 
   [hand, newDeck] = deck.drawFrom(3);
-  assert.is(hand.size, 1, "by default, draws one card");
-  assert.is(hand.get(0), 3, "by default, draws one card");
+  assert.is(hand.size, 1, "by default, draws one element");
+  assert.is(hand.get(0), 3, "by default, draws one element");
   assert.is(newDeck.get(2), 2);
-  assert.is(newDeck.get(3), 4, "removes correct card from the new deck");
+  assert.is(newDeck.get(3), 4, "removes correct element from the new deck");
   assert.is(newDeck.size, 9);
 
   [hand, newDeck] = deck.drawFrom(3, 2);
-  assert.is(hand.size, 2, "Draw 2 cards from deck");
-  assert.is(hand.get(0), 3, "draws correct cards");
-  assert.is(hand.get(1), 4, "draws correct cards");
+  assert.is(hand.size, 2, "Draw 2 elements from deck");
+  assert.is(hand.get(0), 3, "draws correct elements");
+  assert.is(hand.get(1), 4, "draws correct elements");
   assert.is(newDeck.get(2), 2);
-  assert.is(newDeck.get(3), 5, "removes correct card from the new deck");
+  assert.is(newDeck.get(3), 5, "removes correct element from the new deck");
   assert.is(newDeck.size, 8);
 });
 
@@ -135,19 +147,23 @@ test("deal() / dealFromTop()", assert => {
   assert.true(isFunction(deck.deal, "deal() exists"));
 
   [hand0, hand1, newDeck] = deck.deal(2, 3);
-  assert.is(hand0.size, 3, "Deal 3 cards to 2 hands");
+  assert.is(hand0.size, 3, "Deal 3 elements to 2 hands");
   assert.is(hand1.size, 3);
   assert.is(
     hand0.get(0),
     4,
-    "Order of cards: top card on deck is bottom card of hand."
+    "Order of elements: top element on deck is bottom element of hand."
   );
   assert.is(hand0.get(1), 2);
   assert.is(hand0.get(2), 0);
-  assert.is(newDeck.size, 4, "Remaining cards stay in deck");
+  assert.is(newDeck.size, 4, "Remaining elements stay in deck");
 
   [hand0, hand1, newDeck] = deck.deal(2);
-  assert.is(hand0.size, 5, "If no card count is given, all cards are dealt.");
+  assert.is(
+    hand0.size,
+    5,
+    "If no element count is given, all elements are dealt."
+  );
   assert.is(hand1.size, 5);
   assert.is(newDeck.size, 0);
 
@@ -155,7 +171,7 @@ test("deal() / dealFromTop()", assert => {
   assert.is(
     hand0.size,
     4,
-    "Dealing more cards than available distributes until all gone"
+    "Dealing more elements than available distributes until all gone"
   );
   assert.is(
     hand1.size,
@@ -166,7 +182,7 @@ test("deal() / dealFromTop()", assert => {
   assert.is(
     newDeck.size,
     0,
-    "when more cards are dealt than are in deck, the deck is empty"
+    "when more elements are dealt than are in deck, the deck is empty"
   );
 
   assert.is(
@@ -182,19 +198,19 @@ test("dealFromBottom()", assert => {
   assert.true(isFunction(deck.dealFromBottom));
 
   [hand0, hand1, newDeck] = deck.dealFromBottom(2, 3);
-  assert.is(hand0.size, 3, "Deal 3 cards to 2 hands from bottom");
+  assert.is(hand0.size, 3, "Deal 3 elements to 2 hands from bottom");
   assert.is(hand1.size, 3);
   assert.is(
     hand0.get(0),
     5,
-    "Order of cards: top card on deck is bottom card of hand."
+    "Order of elements: top element on deck is bottom element of hand."
   );
   assert.is(hand0.get(1), 7);
   assert.is(hand0.get(2), 9);
-  assert.is(newDeck.size, 4, "Remaining cards stay in deck");
+  assert.is(newDeck.size, 4, "Remaining elements stay in deck");
 
   [hand0, hand1, newDeck] = deck.dealFromBottom(2);
-  assert.is(hand0.size, 5, "By default deal all the cards");
+  assert.is(hand0.size, 5, "By default deal all the elements");
   assert.is(hand1.size, 5);
   assert.is(newDeck.size, 0);
 });
@@ -281,14 +297,13 @@ test("cut() / split()", assert => {
   assert.is(deck.split, deck.cut, "split() is an alias for cut()");
 });
 
-test("setRandomSeed(), getRandomItemIndex(), shuffle()", assert => {
+test("setRandomSeed(), getRandomItemIndex()", assert => {
   let deck = createDeckOf10();
   assert.true(isFunction(deck.setRandomSeed), "setRandomSeed() is a function.");
   assert.true(
     isFunction(deck.getRandomItemIdex),
     "getRandomItemIndex() is a function."
   );
-  assert.true(isFunction(deck.shuffle), "shuffle() is a function.");
 
   deck.setRandomSeed("seed");
   const get10RandomItems = () =>
@@ -320,6 +335,71 @@ test("setRandomSeed(), getRandomItemIndex(), shuffle()", assert => {
     tenRandomItems,
     "Setting random seed to undefined uses a non deterministic random number. This should (almost) never generate the same number as the deterministic one."
   );
+});
+
+test("drawRandom()", assert => {
+  let deck = createDeckOf10();
+  assert.true(isFunction(deck.drawRandom), "drawRandom() is a function.");
+
+  deck.setRandomSeed("seed");
+  let [hand, newDeck] = deck.drawRandom();
+  assert.is(
+    hand.get(0),
+    5,
+    "Draws a element from random index of remaining items"
+  );
+  assert.is(hand.size, 1, "Draws one element by default");
+  assert.is(newDeck.size, 9, "Removes element from new deck.");
+
+  deck.setRandomSeed("seed");
+  [hand, newDeck] = deck.drawRandom(5);
+  assert.is(
+    hand.get(0),
+    5,
+    "Draws a element from random index of remaining items"
+  );
+  assert.is(
+    hand.get(1),
+    8,
+    "The index of the subsequent draws is random (not sequential)"
+  );
+  assert.is(hand.get(2), 7);
+  assert.is(hand.get(3), 6);
+  assert.is(hand.get(4), 2);
+  assert.is(hand.size, 5, "Draws the number of elements you ask for");
+  assert.is(newDeck.size, 5, "Removes element from new deck.");
+  assert.is(
+    newDeck.join("-"),
+    "0-1-3-4-9",
+    "New deck elements remain in same order and contain none of the drawn items."
+  );
+});
+
+test("addRandom()", assert => {
+  let deck = createDeckOf10();
+  assert.true(isFunction(deck.addRandom), "addRandom() is a function.");
+
+  deck.setRandomSeed("seed");
+  let newDeck = deck.addRandom("joker");
+  assert.is(newDeck.size, 11, "Adds a new item");
+  assert.is(newDeck.get(5), "joker", "Adds at a random position");
+
+  deck.setRandomSeed("seed");
+  newDeck = deck.addRandom("a", "b", "c");
+  assert.is(newDeck.size, 13, "Adds several items");
+  assert.is(newDeck.get(5), "a", "Adds first item at a random position");
+  assert.is(
+    newDeck.get(10),
+    "b",
+    "Adds subsequent items at a random positions"
+  );
+  assert.is(newDeck.get(9), "c");
+});
+
+test("shuffle()", assert => {
+  let deck = createDeckOf10();
+  assert.true(isFunction(deck.setRandomSeed), "setRandomSeed() is a function.");
+  assert.true(isFunction(deck.shuffle), "shuffle() is a function.");
 
   deck.setRandomSeed("seed");
   let shuffledDeck = deck.shuffle();

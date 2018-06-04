@@ -8,6 +8,25 @@ class Deck extends Stack {
     super(value);
   }
 
+  set(index, value) {
+    return this.splice(index, 1, value);
+  }
+
+  addToTop = (firstElement, ...rest) =>
+    new Deck(this.push(firstElement, ...rest));
+
+  addToBottom = (element, ...rest) =>
+    this.splice(this.size, 0, element, ...rest);
+
+  addAt = (index, firstElement, ...rest) =>
+    this.splice(index, 0, firstElement, ...rest);
+
+  addRandom = (...elements) =>
+    elements.reduce((deck, element) => {
+      const i = deck.getRandomItemIdex();
+      return deck.addAt(i, element);
+    }, this);
+
   drawFromTop = (n = 1) => [this.take(n), this.skip(n)];
 
   drawFromBottom = (n = 1) => [this.takeLast(n).reverse(), this.skipLast(n)];
@@ -16,6 +35,18 @@ class Deck extends Stack {
     this.skip(index).take(n),
     this.splice(index, n),
   ];
+
+  drawRandom = (n = 1) => {
+    const deck = this.toArray();
+    const hand = [];
+    while (n > 0) {
+      n--;
+      const i = random(deck.length);
+      hand.push(deck[i]);
+      deck.splice(i, 1);
+    }
+    return [new Deck(hand), new Deck(deck)];
+  };
 
   move(targetDeck, n) {
     const [drawnItems, sourceDeck] = this.draw(n);
@@ -42,19 +73,6 @@ class Deck extends Stack {
 
   dealFromBottom = (groupCount, elementCount = -1) =>
     this.reverse().deal(groupCount, elementCount);
-
-  set(index, value) {
-    return this.splice(index, 1, value);
-  }
-
-  addToTop = (firstElement, ...rest) =>
-    new Deck(this.push(firstElement, ...rest));
-
-  addToBottom = (element, ...rest) =>
-    this.splice(this.size, 0, element, ...rest);
-
-  addAt = (index, firstElement, ...rest) =>
-    this.splice(index, 0, firstElement, ...rest);
 
   cut = (index = Math.ceil(this.size / 2)) => this.draw(index);
 
