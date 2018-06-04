@@ -7,10 +7,6 @@ const isFunction = R.is(Function);
 
 const createDeckOf10 = () => new Deck([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
-test("Hello world!", assert => {
-  assert.pass("Checking that AVA is running.");
-});
-
 test("Deck exists", assert => {
   assert.truthy(Deck, "Deck exists");
   let deck = new Deck([1, 2, 3]);
@@ -301,7 +297,7 @@ test("setRandomSeed(), getRandomItemIndex()", assert => {
   let deck = createDeckOf10();
   assert.true(isFunction(deck.setRandomSeed), "setRandomSeed() is a function.");
   assert.true(
-    isFunction(deck.getRandomItemIdex),
+    isFunction(deck.getRandomItemIndex),
     "getRandomItemIndex() is a function."
   );
 
@@ -309,7 +305,7 @@ test("setRandomSeed(), getRandomItemIndex()", assert => {
   const get10RandomItems = () =>
     new Array(10)
       .fill(0)
-      .map(() => deck.getRandomItemIdex())
+      .map(() => deck.getRandomItemIndex())
       .join("-");
   let tenRandomItems = get10RandomItems();
   const expected = "5-8-7-7-3-1-3-5-1-1"; // added manually after first experiment
@@ -394,6 +390,8 @@ test("addRandom()", assert => {
     "Adds subsequent items at a random positions"
   );
   assert.is(newDeck.get(9), "c");
+
+  assert.is(newDeck.addRandom, newDeck.shuffleInto);
 });
 
 test("shuffle()", assert => {
