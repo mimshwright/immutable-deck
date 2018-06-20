@@ -123,20 +123,6 @@ test("drawFrom()", assert => {
   assert.is(newDeck.size, 8);
 });
 
-test("move()", assert => {
-  let deck = createDeckOf10();
-  assert.true(isFunction(deck.move), "move() is a function.");
-
-  let targetDeck = new Deck(["existing value"]);
-  let sourceDeck;
-  [targetDeck, sourceDeck] = deck.move(targetDeck, 5);
-  assert.is(targetDeck.size, 6);
-  assert.is(sourceDeck.size, 5);
-  assert.is(targetDeck.get(0), 0);
-  assert.is(targetDeck.get(5), "existing value");
-  assert.is(sourceDeck.get(0), 5);
-});
-
 test("deal() / dealFromTop()", assert => {
   let deck = createDeckOf10();
   let hand0, hand1, hand2, newDeck;
@@ -193,21 +179,25 @@ test("dealFromBottom()", assert => {
   let hand0, hand1, newDeck;
   assert.true(isFunction(deck.dealFromBottom));
 
-  [hand0, hand1, newDeck] = deck.dealFromBottom(2, 3);
-  assert.is(hand0.size, 3, "Deal 3 elements to 2 hands from bottom");
-  assert.is(hand1.size, 3);
+  [hand0, hand1, newDeck] = deck.dealFromBottom(2, 2);
+  assert.is(hand0.size, 2, "Deal 2 elements to 2 hands from bottom");
+  assert.is(hand1.size, 2);
   assert.is(
     hand0.get(0),
-    5,
-    "Order of elements: top element on deck is bottom element of hand."
+    9,
+    "Order of elements: bottom element of deck should be first element of hand."
   );
   assert.is(hand0.get(1), 7);
-  assert.is(hand0.get(2), 9);
-  assert.is(newDeck.size, 4, "Remaining elements stay in deck");
+  assert.is(newDeck.size, 6, "Remaining elements stay in deck");
+  assert.is(
+    newDeck.join("-"),
+    "0-1-2-3-4-5",
+    "Remaining elements stay in deck"
+  );
 
   [hand0, hand1, newDeck] = deck.dealFromBottom(2);
-  assert.is(hand0.size, 5, "By default deal all the elements");
-  assert.is(hand1.size, 5);
+  assert.is(hand0.join("-"), "9-7-5-3-1", "By default deal all the elements");
+  assert.is(hand1.join("-"), "8-6-4-2-0");
   assert.is(newDeck.size, 0);
 });
 
@@ -293,19 +283,19 @@ test("cut() / split()", assert => {
   assert.is(deck.split, deck.cut, "split() is an alias for cut()");
 });
 
-test("setRandomSeed(), getRandomItemIndex()", assert => {
+test("setRandomSeed(), getRandomIndex()", assert => {
   let deck = createDeckOf10();
   assert.true(isFunction(deck.setRandomSeed), "setRandomSeed() is a function.");
   assert.true(
-    isFunction(deck.getRandomItemIndex),
-    "getRandomItemIndex() is a function."
+    isFunction(deck.getRandomIndex),
+    "getRandomIndex() is a function."
   );
 
   deck.setRandomSeed("seed");
   const get10RandomItems = () =>
     new Array(10)
       .fill(0)
-      .map(() => deck.getRandomItemIndex())
+      .map(() => deck.getRandomIndex())
       .join("-");
   let tenRandomItems = get10RandomItems();
   const expected = "5-8-7-7-3-1-3-5-1-1"; // added manually after first experiment

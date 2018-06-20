@@ -28,7 +28,7 @@ class Deck extends Stack {
    */
   addRandom = (...elements) =>
     elements.reduce((deck, element) => {
-      const i = deck.getRandomItemIndex();
+      const i = deck.getRandomIndex();
       return deck.addAt(i, element);
     }, this);
 
@@ -71,15 +71,6 @@ class Deck extends Stack {
   };
 
   /**
-   * Moves items from this deck to another deck.
-   * Returns an array with [newTargetDeck, newSourceDeck].
-   */
-  move = (targetDeck, n) => {
-    const [drawnItems, sourceDeck] = this.draw(n);
-    return [targetDeck.add(...drawnItems), sourceDeck];
-  };
-
-  /**
    * Deals items to a specified number of groups.
    * An item is moved from this deck to each new group (a Deck) in a sequence
    * until the size of each group is the same as the elementCount,
@@ -108,7 +99,9 @@ class Deck extends Stack {
    * Same as deal but cards are taken from bottom
    */
   dealFromBottom = (groupCount, elementCount = -1) =>
-    this.reverse().deal(groupCount, elementCount);
+    this.reverse()
+      .deal(groupCount, elementCount)
+      .map(deck => deck.reverse());
 
   /**
    * Splits the deck into two decks at the index.
@@ -126,7 +119,7 @@ class Deck extends Stack {
     (random = createRandomNumberGenerator(seed));
 
   /** Return a random index in this Deck */
-  getRandomItemIndex = () => random(this.size);
+  getRandomIndex = () => random(this.size);
 
   /**
    * Fisher Yates shuffle
