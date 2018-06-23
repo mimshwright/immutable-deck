@@ -48,7 +48,7 @@ This library is all about organizing the elements (cards) in the deck but it doe
 
 ## API
 
-Important: `Deck` extends `[Immutable.Stack](https://facebook.github.io/immutable-js/docs/#/Stack)` so be sure to familiarize yourself with Immutable's API. it can do everything that a `Stack` can do plus the following...  
+Important: `Deck` extends [Immutable.Stack](https://facebook.github.io/immutable-js/docs/#/Stack) so be sure to familiarize yourself with Immutable's API. it can do everything that a `Stack` can do plus the following...  
 
 ### Basics 
 
